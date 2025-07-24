@@ -7,12 +7,16 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from main import finance_parser, format_transaction_response
+from parser import FinanceParser
+from formatters import format_transaction_response
 
 def test_parser():
     """Test the finance parser with sample inputs."""
     
     print("🧪 Testing Money Tracker Bot Parser\n")
+    
+    # Initialize parser
+    finance_parser = FinanceParser()
     
     # Test cases
     test_cases = [
