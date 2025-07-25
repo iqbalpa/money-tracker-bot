@@ -44,12 +44,12 @@ function doPost(e) {
 }
 
 /**
- * Save transaction data to the Google Sheets spreadsheet
+ * Save transaction data to the appropriate Google Sheets spreadsheet
  */
 function saveToSpreadsheet(data) {
   try {
-    // Get or create the spreadsheet
-    const sheet = getOrCreateSheet();
+    // Get or create the appropriate sheet based on transaction type
+    const sheet = getOrCreateSheetByType(data.type);
     
     // Prepare row data based on transaction type
     let rowData;
@@ -58,34 +58,28 @@ function saveToSpreadsheet(data) {
       rowData = [
         data.timestamp,           // A: Timestamp
         data.date,               // B: Date
-        data.type,               // C: Type
-        data.amount,             // D: Amount
-        data.category || '',     // E: Category
-        data.account || '',      // F: Account
-        data.description || '',  // G: Description
-        '',                      // H: From Account (empty for expense/income)
-        ''                       // I: To Account (empty for expense/income)
+        data.amount,             // C: Amount
+        data.category || '',     // D: Category
+        data.account || '',      // E: Account
+        data.description || ''   // F: Description
       ];
     } else if (data.type === 'transfer') {
       rowData = [
         data.timestamp,              // A: Timestamp
         data.date,                   // B: Date
-        data.type,                   // C: Type
-        data.amount,                 // D: Amount
-        '',                          // E: Category (empty for transfer)
-        '',                          // F: Account (empty for transfer)
-        data.description || '',      // G: Description
-        data.from_account || '',     // H: From Account
-        data.to_account || ''        // I: To Account
+        data.amount,                 // C: Amount
+        data.from_account || '',     // D: From Account
+        data.to_account || '',       // E: To Account
+        data.description || ''       // F: Description
       ];
     } else {
       throw new Error('Unknown transaction type: ' + data.type);
     }
     
-    // Add the row to the sheet
+    // Add the row to the appropriate sheet
     sheet.appendRow(rowData);
     
-    console.log('Successfully saved transaction:', data.type, data.amount);
+    console.log('Successfully saved transaction:', data.type, data.amount, 'to', sheet.getName());
     return true;
     
   } catch (error) {
@@ -95,70 +89,76 @@ function saveToSpreadsheet(data) {
 }
 
 /**
- * Get existing sheet or create new one with headers
+ * Get existing sheet or create new one with headers based on transaction type
  */
-function getOrCreateSheet() {
-  const SHEET_NAME = 'Money Tracker';
-  
-  // Try to get existing spreadsheet (replace with your spreadsheet ID if you have one)
-  let spreadsheet;
-  try {
-    // Option 1: Use existing spreadsheet by ID (uncomment and add your ID)
-    // spreadsheet = SpreadsheetApp.openById('YOUR_SPREADSHEET_ID_HERE');
-    
-    // Option 2: Create new spreadsheet (comment out if using existing)
-    spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    if (!spreadsheet) {
-      spreadsheet = SpreadsheetApp.create('Money Tracker Data');
+function getOrCreateSheetByType(transactionType) {
+  // Define sheet configurations for each transaction type
+  const sheetConfigs = {
+    'expense': {
+      name: 'Expenses',
+      headers: ['Timestamp', 'Date', 'Amount', 'Category', 'Account', 'Description'],
+      color: '#dc3545' // Red
+    },
+    'income': {
+      name: 'Income',
+      headers: ['Timestamp', 'Date', 'Amount', 'Category', 'Account', 'Description'],
+      color: '#28a745' // Green
+    },
+    'transfer': {
+      name: 'Transfers',
+      headers: ['Timestamp', 'Date', 'Amount', 'From Account', 'To Account', 'Description'],
+      color: '#17a2b8' // Blue
     }
-  } catch (error) {
-    // Create new spreadsheet if none exists
-    spreadsheet = SpreadsheetApp.create('Money Tracker Data');
+  };
+  
+  const config = sheetConfigs[transactionType];
+  if (!config) {
+    throw new Error('Unknown transaction type: ' + transactionType);
   }
   
-  // Get or create the sheet
-  let sheet = spreadsheet.getSheetByName(SHEET_NAME);
+  // Get the active spreadsheet (the one bound to this script)
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  if (!spreadsheet) {
+    throw new Error('No active spreadsheet found. Please bind this script to a Google Sheets document.');
+  }
+  
+  // Get or create the specific sheet
+  let sheet = spreadsheet.getSheetByName(config.name);
   
   if (!sheet) {
     // Create new sheet with headers
-    sheet = spreadsheet.insertSheet(SHEET_NAME);
+    sheet = spreadsheet.insertSheet(config.name);
     
     // Add headers
-    const headers = [
-      'Timestamp',      // A
-      'Date',          // B
-      'Type',          // C
-      'Amount',        // D
-      'Category',      // E
-      'Account',       // F
-      'Description',   // G
-      'From Account',  // H
-      'To Account'     // I
-    ];
-    
-    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sheet.getRange(1, 1, 1, config.headers.length).setValues([config.headers]);
     
     // Format headers
-    const headerRange = sheet.getRange(1, 1, 1, headers.length);
+    const headerRange = sheet.getRange(1, 1, 1, config.headers.length);
     headerRange.setFontWeight('bold');
-    headerRange.setBackground('#4285f4');
+    headerRange.setBackground(config.color);
     headerRange.setFontColor('white');
     
-    // Set column widths
-    sheet.setColumnWidth(1, 180); // Timestamp
-    sheet.setColumnWidth(2, 100); // Date
-    sheet.setColumnWidth(3, 80);  // Type
-    sheet.setColumnWidth(4, 100); // Amount
-    sheet.setColumnWidth(5, 120); // Category
-    sheet.setColumnWidth(6, 120); // Account
-    sheet.setColumnWidth(7, 200); // Description
-    sheet.setColumnWidth(8, 120); // From Account
-    sheet.setColumnWidth(9, 120); // To Account
+    // Set column widths based on transaction type
+    if (transactionType === 'expense' || transactionType === 'income') {
+      sheet.setColumnWidth(1, 180); // Timestamp
+      sheet.setColumnWidth(2, 100); // Date
+      sheet.setColumnWidth(3, 100); // Amount
+      sheet.setColumnWidth(4, 120); // Category
+      sheet.setColumnWidth(5, 120); // Account
+      sheet.setColumnWidth(6, 200); // Description
+    } else if (transactionType === 'transfer') {
+      sheet.setColumnWidth(1, 180); // Timestamp
+      sheet.setColumnWidth(2, 100); // Date
+      sheet.setColumnWidth(3, 100); // Amount
+      sheet.setColumnWidth(4, 120); // From Account
+      sheet.setColumnWidth(5, 120); // To Account
+      sheet.setColumnWidth(6, 200); // Description
+    }
     
     // Freeze header row
     sheet.setFrozenRows(1);
     
-    console.log('Created new sheet with headers');
+    console.log('Created new sheet:', config.name, 'with headers');
   }
   
   return sheet;
@@ -201,17 +201,18 @@ function testScript() {
   ];
   
   console.log('Testing script with sample data...');
+  console.log('This will create 3 separate sheets: Expenses, Income, Transfers');
   
   for (const testData of testTransactions) {
     try {
       saveToSpreadsheet(testData);
-      console.log('✅ Successfully saved:', testData.type);
+      console.log('✅ Successfully saved:', testData.type, 'to', testData.type.charAt(0).toUpperCase() + testData.type.slice(1), 'sheet');
     } catch (error) {
       console.error('❌ Failed to save:', testData.type, error);
     }
   }
   
-  console.log('Test completed!');
+  console.log('Test completed! Check your spreadsheet for 3 new sheets.');
 }
 
 /**
