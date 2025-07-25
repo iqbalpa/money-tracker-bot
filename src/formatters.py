@@ -49,15 +49,15 @@ I can help you track your personal finances. Here are the supported formats:
 
 **💸 Expense:**
 `- <amount> <category> <account> <description> [@YYYY-MM-DD]`
-*Example:* `- 50.00 food cash Lunch at restaurant`
+*Example:* `- 50.00 Transportation Cash Bus fare to work`
 
 **💵 Income:**
 `+ <amount> <category> <account> <description> [@YYYY-MM-DD]`
-*Example:* `+ 1000.00 salary bank Monthly salary`
+*Example:* `+ 1000.00 Salary BRI Monthly salary`
 
 **🔄 Transfer:**
 `t <amount> <from_account> > <to_account> [description] [@YYYY-MM-DD]`
-*Example:* `t 200.00 cash > bank ATM deposit`
+*Example:* `t 200.00 Cash > BRI ATM deposit`
 
 **📅 Date is optional** - if not specified, today's date will be used.
 
@@ -82,14 +82,21 @@ def get_help_message() -> str:
    `t <amount> <from_account> > <to_account> [description] [@date]`
 
 **Examples:**
-• `- 25.50 groceries cash Weekly shopping @2024-01-15`
-• `+ 3000.00 freelance paypal Web design project`
-• `t 500.00 savings > checking Emergency fund`
+• `- 25.50 Shopping Cash Weekly groceries @2024-01-15`
+• `+ 3000.00 Business Mandiri Web design project`
+• `t 500.00 Gopay > BRI Emergency fund transfer`
+
+**Available Categories:**
+Transportation, Shopping, Entertainment, Healthcare, Education, Travel, Investment, Salary, Business, Other
+
+**Available Accounts:**
+Cash, BRI, Mandiri, Gopay, OVO, ShopeePay, PayPal
 
 **Notes:**
 - Date format: YYYY-MM-DD (optional, defaults to today)
 - Amount: Use decimal format (e.g., 25.50)
-- No spaces in category/account names (use underscores if needed)
+- Category/account names cannot contain spaces (use single words)
+- Use "Other" category for miscellaneous expenses
 """
 
 
@@ -100,9 +107,9 @@ def get_error_message() -> str:
 
 Please use one of these formats:
 
-**Expense:** `- 50.00 food cash Lunch`
-**Income:** `+ 1000.00 salary bank Monthly pay`
-**Transfer:** `t 200.00 cash > bank Deposit`
+**Expense:** `- 50.00 Transportation Cash Bus fare`
+**Income:** `+ 1000.00 Salary BRI Monthly pay`
+**Transfer:** `t 200.00 Cash > BRI Deposit`
 
 Send /help for more details and examples.
 """
