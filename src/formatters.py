@@ -4,13 +4,14 @@ Response formatting utilities for the Money Tracker Bot
 
 from typing import Union
 from models import Expense, Income, Transfer
+from config import DEFAULT_CURRENCY
 
 
 def format_transaction_response(transaction: Union[Expense, Income, Transfer]) -> str:
     """Format the parsed transaction into a clean response."""
     if isinstance(transaction, Expense):
         return f"💸 **Expense Recorded**\n\n" \
-               f"💰 Amount: ${transaction.amount:.2f}\n" \
+               f"💰 Amount: {DEFAULT_CURRENCY}{transaction.amount:,.2f}\n" \
                f"📂 Category: {transaction.category}\n" \
                f"🏦 Account: {transaction.account}\n" \
                f"📝 Description: {transaction.name}\n" \
@@ -18,7 +19,7 @@ def format_transaction_response(transaction: Union[Expense, Income, Transfer]) -
     
     elif isinstance(transaction, Income):
         return f"💵 **Income Recorded**\n\n" \
-               f"💰 Amount: +${transaction.amount:.2f}\n" \
+               f"💰 Amount: +{DEFAULT_CURRENCY}{transaction.amount:,.2f}\n" \
                f"📂 Category: {transaction.category}\n" \
                f"🏦 Account: {transaction.account}\n" \
                f"📝 Description: {transaction.name}\n" \
@@ -26,7 +27,7 @@ def format_transaction_response(transaction: Union[Expense, Income, Transfer]) -
     
     elif isinstance(transaction, Transfer):
         response = f"🔄 **Transfer Recorded**\n\n" \
-                  f"💰 Amount: ${transaction.amount:.2f}\n" \
+                  f"💰 Amount: {DEFAULT_CURRENCY}{transaction.amount:,.2f}\n" \
                   f"📤 From: {transaction.from_account}\n" \
                   f"📥 To: {transaction.to_account}\n" \
                   f"📅 Date: {transaction.date}"

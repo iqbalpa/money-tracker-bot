@@ -26,5 +26,5 @@ if not SHEETS_API_URL:
     raise ValueError("SHEETS_API not found in environment variables. Please check your .env file.")
 
 # Other configuration constants can be added here
-DEFAULT_CURRENCY = "$"
+DEFAULT_CURRENCY = "Rp"
 DATE_FORMAT = "%Y-%m-%d"

@@ -147,11 +147,11 @@ Add email notifications for large transactions:
 
 ```javascript
 function checkLargeTransaction(amount) {
-  if (amount > 1000) {
+  if (amount > 1000000) { // IDR 1,000,000
     MailApp.sendEmail({
       to: 'your-email@gmail.com',
       subject: 'Large Transaction Alert',
-      body: `Transaction of $${amount} recorded`
+      body: `Transaction of Rp${amount.toLocaleString('id-ID')} recorded`
     });
   }
 }
