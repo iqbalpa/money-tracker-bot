@@ -150,6 +150,8 @@ python tests/test_version.py
 
 - `/start` - Welcome message and usage instructions
 - `/help` - Detailed help with examples and format specifications
+- `/accounts` - Show list of available accounts (Cash, BRI, Mandiri, Gopay, OVO, ShopeePay, PayPal)
+- `/categories` - Show list of available categories (Transportation, Shopping, Entertainment, Healthcare, Education, Travel, Investment, Salary, Business, Other)
 
 ## Architecture
 
