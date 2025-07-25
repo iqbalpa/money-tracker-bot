@@ -8,9 +8,11 @@ import os
 import asyncio
 import httpx
 import time
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Add parent directory and src to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from config import SHEETS_API_URL
+from src.config import SHEETS_API_URL
 import json
 
 async def test_script_version():

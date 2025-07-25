@@ -5,10 +5,12 @@ Test script for the Money Tracker Bot parser
 
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Add parent directory and src to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from parser import FinanceParser
-from formatters import format_transaction_response
+from src.parser import FinanceParser
+from src.formatters import format_transaction_response
 
 def test_parser():
     """Test the finance parser with sample inputs."""

@@ -48,7 +48,7 @@ This guide will help you set up the Google Apps Script to receive data from your
 
 1. Run the bot's test script:
    ```bash
-   python test_sheets.py
+   python tests/test_sheets.py
    ```
 2. Check your Google Sheet to verify data is being saved correctly
 

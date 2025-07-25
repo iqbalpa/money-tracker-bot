@@ -6,10 +6,12 @@ Test script for Google Sheets integration
 import sys
 import os
 import asyncio
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Add parent directory and src to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from models import Expense, Income, Transfer
-from sheets import sheets_integration
+from src.models import Expense, Income, Transfer
+from src.sheets import sheets_integration
 
 async def test_sheets_integration():
     """Test the Google Sheets integration with sample data."""
