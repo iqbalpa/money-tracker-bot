@@ -8,8 +8,8 @@ from typing import Union, Dict, Any
 import httpx
 from datetime import datetime
 
-from .models import Expense, Income, Transfer
-from .config import SHEETS_API_URL
+from models import Expense, Income, Transfer
+from config import SHEETS_API_URL
 
 # Set up logging
 logger = logging.getLogger(__name__)
