@@ -18,27 +18,27 @@ async def test_sheets_integration():
     
     print("🧪 Testing Google Sheets Integration\n")
     
-    # Test cases
+    # Test cases with Indonesian accounts and proper dropdown categories
     test_transactions = [
         Expense(
             amount=50.00,
-            category="food",
-            account="cash",
-            name="Test lunch",
+            category="Food & Dining",
+            account="Cash",
+            name="Test lunch expense",
             date="2025-07-25"
         ),
         Income(
             amount=1000.00,
-            category="salary",
-            account="bank",
-            name="Test salary",
+            category="Salary",
+            account="BRI",
+            name="Test monthly salary",
             date="2025-07-25"
         ),
         Transfer(
             amount=200.00,
-            from_account="cash",
-            to_account="bank",
-            description="Test transfer",
+            from_account="Gopay",
+            to_account="Mandiri",
+            description="Test transfer from e-wallet to bank",
             date="2025-07-25"
         )
     ]

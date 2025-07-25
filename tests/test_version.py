@@ -21,14 +21,15 @@ async def test_script_version():
     print("🔍 Testing Google Apps Script Version\n")
     
     # Test with each transaction type to see which sheets get created
+    # Using proper dropdown categories and Indonesian accounts
     test_cases = [
         {
             "timestamp": f"2025-07-25T08:10:{str(int(time.time()) % 60).zfill(2)}",
             "date": "2025-07-25",
             "amount": 1.01,
             "type": "expense",
-            "category": "version_test",
-            "account": "test",
+            "category": "Other",
+            "account": "Cash",
             "description": "VERSION_TEST_EXPENSE"
         },
         {
@@ -36,8 +37,8 @@ async def test_script_version():
             "date": "2025-07-25",
             "amount": 2.02,
             "type": "income",
-            "category": "version_test",
-            "account": "test",
+            "category": "Other",
+            "account": "BRI",
             "description": "VERSION_TEST_INCOME"
         },
         {
@@ -45,8 +46,8 @@ async def test_script_version():
             "date": "2025-07-25",
             "amount": 3.03,
             "type": "transfer",
-            "from_account": "test1",
-            "to_account": "test2",
+            "from_account": "Gopay",
+            "to_account": "Mandiri",
             "description": "VERSION_TEST_TRANSFER"
         }
     ]
