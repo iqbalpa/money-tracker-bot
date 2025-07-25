@@ -17,9 +17,13 @@ logging.basicConfig(
 
 # Get bot token from environment variable
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+SHEETS_API_URL = os.getenv('SHEETS_API')
 
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN not found in environment variables. Please check your .env file.")
+
+if not SHEETS_API_URL:
+    raise ValueError("SHEETS_API not found in environment variables. Please check your .env file.")
 
 # Other configuration constants can be added here
 DEFAULT_CURRENCY = "$"

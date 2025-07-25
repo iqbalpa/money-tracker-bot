@@ -14,9 +14,11 @@ def show_structure():
 ├── parser.py            # 🔍 Parser Logic - Message parsing & validation  
 ├── formatters.py        # 🎨 Formatters - Response formatting & templates
 ├── handlers.py          # 🎮 Bot Handlers - Command & message handling
+├── sheets.py            # 📊 Google Sheets - API integration for data storage
 ├── test_parser.py       # 🧪 Tests - Parser functionality validation
+├── test_sheets.py       # 🧪 Tests - Google Sheets integration testing
 ├── requirements.txt     # 📦 Dependencies
-├── .env                 # 🔐 Environment Variables (BOT_TOKEN)
+├── .env                 # 🔐 Environment Variables (BOT_TOKEN, SHEETS_API)
 ├── .gitignore          # 🚫 Git ignore rules
 └── README.md           # 📖 Documentation
 
@@ -28,7 +30,11 @@ main.py
 
 handlers.py  
 ├── parser.py (FinanceParser)
-└── formatters.py (format_transaction_response, get_*_message)
+├── formatters.py (format_transaction_response, get_*_message)
+└── sheets.py (sheets_integration)
+
+sheets.py
+└── models.py (Expense, Income, Transfer)
 
 parser.py
 └── models.py (Expense, Income, Transfer)
@@ -40,6 +46,10 @@ test_parser.py
 ├── parser.py (FinanceParser) 
 └── formatters.py (format_transaction_response)
 
+test_sheets.py
+├── models.py (Expense, Income, Transfer)
+└── sheets.py (sheets_integration)
+
 🎯 Benefits of Modular Design:
 ✅ Separation of Concerns - Each module has a single responsibility
 ✅ Maintainability - Easy to modify individual components
@@ -47,6 +57,8 @@ test_parser.py
 ✅ Reusability - Modules can be reused in other projects
 ✅ Readability - Clean, organized codebase
 ✅ Scalability - Easy to add new features without affecting existing code
+✅ Google Sheets Integration - Automatic data persistence with error handling
+✅ Async Support - Non-blocking HTTP requests for better performance
 """
     print(structure)
 

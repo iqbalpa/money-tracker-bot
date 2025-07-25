@@ -1,6 +1,6 @@
 # Money Tracker Bot
 
-A Telegram bot for tracking personal finances with support for expenses, income, and transfers.
+A Telegram bot for tracking personal finances with support for expenses, income, and transfers, with automatic Google Sheets integration.
 
 ## Features
 
@@ -8,7 +8,9 @@ A Telegram bot for tracking personal finances with support for expenses, income,
 - **Income**: Record money earned from various sources  
 - **Transfers**: Log money moved between accounts
 - **Date Support**: Optional date specification or auto-default to today
+- **Google Sheets Integration**: Automatically saves all transactions to Google Sheets
 - **Error Handling**: Clear error messages for invalid formats
+- **Real-time Confirmation**: Instant feedback when data is saved to spreadsheet
 
 ## Supported Message Formats
 
@@ -40,9 +42,11 @@ money-tracker-bot/
 ├── parser.py            # Message parsing logic
 ├── formatters.py        # Response formatting utilities
 ├── handlers.py          # Telegram bot command handlers
+├── sheets.py            # Google Sheets API integration
 ├── test_parser.py       # Test script for parser functionality
+├── test_sheets.py       # Test script for Google Sheets integration
 ├── requirements.txt     # Python dependencies
-├── .env                 # Environment variables (BOT_TOKEN)
+├── .env                 # Environment variables (BOT_TOKEN, SHEETS_API)
 ├── .gitignore          # Git ignore rules
 └── README.md           # This file
 ```
@@ -68,9 +72,10 @@ money-tracker-bot/
 
 4. **Configure environment**
    - Create a `.env` file in the project root
-   - Add your Telegram bot token:
+   - Add your Telegram bot token and Google Sheets API URL:
      ```
      BOT_TOKEN=your_bot_token_here
+     SHEETS_API=https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec
      ```
 
 5. **Run the bot**
@@ -78,11 +83,43 @@ money-tracker-bot/
    python main.py
    ```
 
+## Google Sheets Integration
+
+The bot automatically sends all transaction data to Google Sheets via Google Apps Script.
+
+### Data Format Sent to Sheets
+
+Each transaction sends the following data:
+- `timestamp`: ISO format timestamp when the transaction was processed
+- `date`: Transaction date (YYYY-MM-DD)
+- `amount`: Transaction amount
+- `type`: "expense", "income", or "transfer"
+
+**For Expenses and Income:**
+- `category`: Transaction category
+- `account`: Account used
+- `description`: Transaction description
+
+**For Transfers:**
+- `from_account`: Source account
+- `to_account`: Destination account  
+- `description`: Transfer description (optional)
+
+### Setting up Google Sheets
+
+1. Create a Google Apps Script that accepts POST requests
+2. Deploy as a web app with execute permissions for "Anyone"
+3. Add the deployment URL to your `.env` file as `SHEETS_API`
+
 ## Testing
 
-Run the test script to verify parser functionality:
+Run the test scripts to verify functionality:
 ```bash
+# Test parser functionality
 python test_parser.py
+
+# Test Google Sheets integration  
+python test_sheets.py
 ```
 
 ## Bot Commands

@@ -7,6 +7,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from parser import FinanceParser
+from sheets import sheets_integration
 from formatters import (
     format_transaction_response,
     get_welcome_message,
@@ -49,6 +50,20 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             
             # Log the transaction
             logger.info(f"Parsed transaction: {transaction}")
+            
+            # Send to Google Sheets
+            try:
+                sheets_success = await sheets_integration.send_to_sheets(transaction)
+                if sheets_success:
+                    logger.info("Successfully sent transaction to Google Sheets")
+                    # Optionally send a confirmation message
+                    await update.message.reply_text("✅ Data saved to spreadsheet", parse_mode='Markdown')
+                else:
+                    logger.warning("Failed to send transaction to Google Sheets")
+                    await update.message.reply_text("⚠️ Transaction recorded but failed to save to spreadsheet", parse_mode='Markdown')
+            except Exception as e:
+                logger.error(f"Error sending to Google Sheets: {str(e)}")
+                await update.message.reply_text("⚠️ Transaction recorded but failed to save to spreadsheet", parse_mode='Markdown')
         else:
             # Send error message with examples
             error_message = get_error_message()
