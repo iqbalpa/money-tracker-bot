@@ -12,7 +12,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
 from config import BOT_TOKEN
-from handlers import start_command, help_command, handle_message
+from handlers import start_command, help_command, handle_message, accounts_command, categories_command
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -26,6 +26,8 @@ def main() -> None:
     # Add command handlers
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("accounts", accounts_command))
+    application.add_handler(CommandHandler("categories", categories_command))
     
     # Add message handler for text messages (excluding commands)
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))

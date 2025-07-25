@@ -28,3 +28,28 @@ if not SHEETS_API_URL:
 # Other configuration constants can be added here
 DEFAULT_CURRENCY = "Rp"
 DATE_FORMAT = "%Y-%m-%d"
+
+# Available categories for transactions
+AVAILABLE_CATEGORIES = [
+    "Transportation",
+    "Shopping", 
+    "Entertainment",
+    "Healthcare",
+    "Education",
+    "Travel",
+    "Investment",
+    "Salary",
+    "Business",
+    "Other"
+]
+
+# Available accounts for transactions
+AVAILABLE_ACCOUNTS = [
+    "Cash",
+    "BRI",
+    "Mandiri", 
+    "Gopay",
+    "OVO",
+    "ShopeePay",
+    "PayPal"
+]

@@ -12,7 +12,9 @@ from formatters import (
     format_transaction_response,
     get_welcome_message,
     get_help_message,
-    get_error_message
+    get_error_message,
+    get_accounts_message,
+    get_categories_message
 )
 
 # Set up logging
@@ -32,6 +34,18 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     """Send help message."""
     help_message = get_help_message()
     await update.message.reply_text(help_message, parse_mode='Markdown')
+
+
+async def accounts_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send list of available accounts."""
+    accounts_message = get_accounts_message()
+    await update.message.reply_text(accounts_message, parse_mode='Markdown')
+
+
+async def categories_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send list of available categories."""
+    categories_message = get_categories_message()
+    await update.message.reply_text(categories_message, parse_mode='Markdown')
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

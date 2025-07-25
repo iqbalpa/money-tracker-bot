@@ -4,7 +4,7 @@ Response formatting utilities for the Money Tracker Bot
 
 from typing import Union
 from models import Expense, Income, Transfer
-from config import DEFAULT_CURRENCY
+from config import DEFAULT_CURRENCY, AVAILABLE_CATEGORIES, AVAILABLE_ACCOUNTS
 
 
 def format_transaction_response(transaction: Union[Expense, Income, Transfer]) -> str:
@@ -61,7 +61,12 @@ I can help you track your personal finances. Here are the supported formats:
 
 **📅 Date is optional** - if not specified, today's date will be used.
 
-Just send me a message in any of these formats and I'll log it for you!
+**Useful Commands:**
+• `/help` - Detailed help and examples
+• `/accounts` - View available accounts  
+• `/categories` - View available categories
+
+Just send me a message in any of the transaction formats and I'll log it for you!
 """
 
 
@@ -70,7 +75,13 @@ def get_help_message() -> str:
     return """
 📖 **Money Tracker Bot Help**
 
-**Supported Formats:**
+**Available Commands:**
+• `/start` - Get welcome message
+• `/help` - Show this help message
+• `/accounts` - List available accounts
+• `/categories` - List available categories
+
+**Supported Transaction Formats:**
 
 1️⃣ **Expense** (spending money):
    `- <amount> <category> <account> <description> [@date]`
@@ -85,12 +96,6 @@ def get_help_message() -> str:
 • `- 25.50 Shopping Cash Weekly groceries @2024-01-15`
 • `+ 3000.00 Business Mandiri Web design project`
 • `t 500.00 Gopay > BRI Emergency fund transfer`
-
-**Available Categories:**
-Transportation, Shopping, Entertainment, Healthcare, Education, Travel, Investment, Salary, Business, Other
-
-**Available Accounts:**
-Cash, BRI, Mandiri, Gopay, OVO, ShopeePay, PayPal
 
 **Notes:**
 - Date format: YYYY-MM-DD (optional, defaults to today)
@@ -112,4 +117,30 @@ Please use one of these formats:
 **Transfer:** `t 200.00 Cash > BRI Deposit`
 
 Send /help for more details and examples.
+"""
+
+
+def get_accounts_message() -> str:
+    """Get the list of available accounts."""
+    accounts_list = "\n".join([f"• {account}" for account in AVAILABLE_ACCOUNTS])
+    return f"""
+🏦 **Available Accounts**
+
+{accounts_list}
+
+You can use these account names in your transactions.
+Use /help for transaction format examples.
+"""
+
+
+def get_categories_message() -> str:
+    """Get the list of available categories."""
+    categories_list = "\n".join([f"• {category}" for category in AVAILABLE_CATEGORIES])
+    return f"""
+📂 **Available Categories**
+
+{categories_list}
+
+You can use these category names in your transactions.
+Use /help for transaction format examples.
 """
