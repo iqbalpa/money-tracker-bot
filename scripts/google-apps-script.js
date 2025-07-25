@@ -118,16 +118,15 @@ function saveToSpreadsheet(data) {
 function getDropdownOptions() {
   return {
     categories: [
-      'Food & Dining',
+      'Foods',
       'Transportation',
       'Shopping',
       'Entertainment',
-      'Bills & Utilities',
+      'Utilities',
       'Healthcare',
       'Education',
       'Travel',
-      'Personal Care',
-      'Gifts & Donations',
+      'Donations',
       'Investment',
       'Salary',
       'Business',
@@ -137,7 +136,7 @@ function getDropdownOptions() {
       'Cash',
       'BRI',
       'Mandiri',
-      'Bank Jago',
+      'Jago',
       'Gopay',
       'OVO',
       'ShopeePay',
